@@ -20,6 +20,12 @@ The app lets you:
 
 I wanted to avoid setting up a separate database server or any external services for this version, so the whole thing stays pretty lightweight.
 
+## Live demo
+
+You can see it live here:
+
+https://stub-url-shortner.vercel.app/
+
 ## How to run it locally
 
 ```bash
