@@ -10,7 +10,11 @@ import type { User } from "./types";
 // touches this file and the /login /signup routes.
 
 const SESSION_COOKIE = "session";
-const JWT_SECRET = process.env.SESSION_SECRET || "dev-only-insecure-secret-change-me";
+
+function getJwtSecret() {
+  const secret = process.env.SESSION_SECRET ?? "dev-session-secret-change-me";
+  return secret;
+}
 
 export async function hashPassword(password: string) {
   return bcrypt.hash(password, 10);
@@ -21,7 +25,7 @@ export async function verifyPassword(password: string, hash: string) {
 }
 
 export function createSessionToken(userId: string) {
-  return jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: "30d" });
+  return jwt.sign({ sub: userId }, getJwtSecret(), { expiresIn: "30d" });
 }
 
 export async function setSessionCookie(token: string) {
@@ -45,7 +49,7 @@ export async function getCurrentUser(): Promise<User | null> {
   const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return null;
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as { sub: string };
+    const payload = jwt.verify(token, getJwtSecret()) as { sub: string };
     const user = db
       .prepare("SELECT * FROM users WHERE id = ?")
       .get(payload.sub) as User | undefined;

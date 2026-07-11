@@ -1,13 +1,18 @@
 import Database from "better-sqlite3";
 import path from "path";
 import fs from "fs";
+import os from "os";
 
 // A single file-based SQLite database. This is the whole persistence layer
 // for the MVP: no separate cache, queue, or analytics warehouse. That's a
 // deliberate simplification vs. the v1 target architecture (Postgres +
 // Cloudflare KV + Kafka + ClickHouse) -- see README "Scaling this up" section.
 
-const dataDir = path.join(process.cwd(), "data");
+const isVercel = Boolean(process.env.VERCEL);
+const dataDir = isVercel
+  ? os.tmpdir()
+  : path.join(process.cwd(), "data");
+
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
 const dbPath = path.join(dataDir, "app.db");
