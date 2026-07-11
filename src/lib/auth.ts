@@ -4,10 +4,8 @@ import { cookies } from "next/headers";
 import db from "./db";
 import type { User } from "./types";
 
-// Simplification vs. the target architecture's magic-link email auth: this
-// MVP uses email + password with a JWT session cookie. No email provider
-// required to run the demo locally. Swapping in magic links later only
-// touches this file and the /login /signup routes.
+// This version uses email + password with a simple JWT session cookie.
+// It keeps the setup easy and avoids needing any external email service.
 
 const SESSION_COOKIE = "session";
 

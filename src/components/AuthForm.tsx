@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
+export default function AccountForm({ mode }: { mode: "login" | "signup" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -22,13 +22,13 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Something went wrong.");
+        setError(data.error ?? "That didn’t work. Try again.");
         return;
       }
       router.push("/dashboard");
       router.refresh();
     } catch {
-      setError("Couldn't reach the server. Try again.");
+      setError("The server is being slow. Try again in a moment.");
     } finally {
       setLoading(false);
     }

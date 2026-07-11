@@ -5,7 +5,7 @@ import { useState } from "react";
 import CopyButton from "./CopyButton";
 import type { DashboardLink } from "./Dashboard";
 
-export default function LinkRow({ link, onChange }: { link: DashboardLink; onChange: () => void }) {
+export default function LinkEntry({ link, onChange }: { link: DashboardLink; onChange: () => void }) {
   const [busy, setBusy] = useState(false);
   const shortUrl =
     typeof window !== "undefined" ? `${window.location.origin}/${link.slug}` : `/${link.slug}`;
@@ -50,7 +50,7 @@ export default function LinkRow({ link, onChange }: { link: DashboardLink; onCha
           href={`/dashboard/${link.id}`}
           className="px-3 py-1.5 rounded-sm border border-line text-sm hover:border-moss hover:text-moss transition-colors"
         >
-          Details
+          Open
         </Link>
         <button
           onClick={toggleDisabled}

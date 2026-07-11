@@ -21,7 +21,7 @@ interface Analytics {
   deviceBreakdown: { device: string; clicks: number }[];
 }
 
-export default function LinkDetail({ linkId }: { linkId: string }) {
+export default function LinkDetails({ linkId }: { linkId: string }) {
   const [link, setLink] = useState<LinkData | null>(null);
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [notFound, setNotFound] = useState(false);

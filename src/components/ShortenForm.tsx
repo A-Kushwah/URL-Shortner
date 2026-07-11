@@ -9,7 +9,7 @@ interface Result {
   id: string;
 }
 
-export default function ShortenForm() {
+export default function LinkShortener() {
   const [url, setUrl] = useState("");
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -28,13 +28,13 @@ export default function ShortenForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Something went wrong.");
+        setError(data.error ?? "That didn’t work. Try again.");
       } else {
         setResult(data);
         setUrl("");
       }
     } catch {
-      setError("Couldn't reach the server. Try again.");
+      setError("The server is being slow. Try again in a moment.");
     } finally {
       setLoading(false);
     }

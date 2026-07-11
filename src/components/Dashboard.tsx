@@ -12,7 +12,7 @@ export interface DashboardLink {
   total_clicks: number;
 }
 
-export default function Dashboard() {
+export default function LinkDashboard() {
   const [links, setLinks] = useState<DashboardLink[] | null>(null);
   const [url, setUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -40,13 +40,13 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Something went wrong.");
+        setError(data.error ?? "That didn’t work. Try again.");
         return;
       }
       setUrl("");
       await load();
     } catch {
-      setError("Couldn't reach the server. Try again.");
+      setError("The server is being slow. Try again in a moment.");
     } finally {
       setCreating(false);
     }

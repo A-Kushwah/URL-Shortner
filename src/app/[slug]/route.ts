@@ -2,12 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getLinkBySlug, recordClick } from "@/lib/links";
 import { deviceFromUserAgent, countryFromHeaders, hostFromReferer } from "@/lib/request";
 
-// This is the hot path. In the target architecture it runs as a Cloudflare
-// Worker reading from an edge KV cache in front of Postgres, with click
-// events shipped to Kafka for async aggregation. Here it's a single Next.js
-// route reading SQLite directly and writing the click inline -- functionally
-// equivalent for a demo's traffic, but without the edge cache or async
-// ingestion pipeline. See README "Scaling this up."
+// This is the main redirect path for the app. For this version it just reads
+// from SQLite and records a click right away, which keeps the whole project
+// simple enough to build and explain.
 export async function GET(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const link = getLinkBySlug(slug);
@@ -24,8 +21,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
     deviceFromUserAgent(req.headers.get("user-agent"))
   );
 
-  // 302 rather than the perf-optimal 301 (see architecture doc §5) so that a
-  // link edited or disabled later isn't stuck cached in visitors' browsers --
-  // the simpler, more forgiving choice for a small-scale MVP.
+  // I used a 302 redirect here so a link can be changed or disabled later
+  // without leaving old visitors stuck on a cached destination.
   return NextResponse.redirect(link.destination_url, { status: 302 });
 }

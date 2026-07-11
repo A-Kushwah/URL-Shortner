@@ -9,7 +9,7 @@ interface Me {
   email: string;
 }
 
-export default function NavBar() {
+export default function TopBar() {
   const [me, setMe] = useState<Me | null | undefined>(undefined);
   const pathname = usePathname();
   const router = useRouter();
